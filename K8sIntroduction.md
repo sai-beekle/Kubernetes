@@ -1,12 +1,12 @@
  (K8s)
 
-##  Kubernetes Intoduction
+#  Kubernetes Intoduction
 
  * Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.
  * It groups containers that make up an application into logical units for easy management and discovery.
  * It was originally designed by Google, and is now maintained by the Cloud Native Computing Foundation.
  * The name Kubernetes originates from Greek, meaning helmsman or pilot of the ship.    
-  ** NOTE: I do referr kubernetes as K8s **    
+  **NOTE: I do referr kubernetes as K8s**    
 
  ```html
    A quick history : K8s technology was used by Google on their production environment 
