@@ -26,7 +26,7 @@
 
 
  There are many ways to learn K8s, 
- * You can learn from the (official website)[https://kubernetes.io/docs/home/]
+ * You can learn from the [official website link](https://kubernetes.io/docs/home/)
  * Here is the official Github repository link [https://github.com/kubernetes/kubernetes](https://github.com/kubernetes/kubernetes)
  * Many online classroom courses avaialble.
  * And to get the basic idea of what K8s is just go through the youtube videos (which I preferred).
