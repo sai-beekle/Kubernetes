@@ -249,7 +249,7 @@ Getting the error as **Number of required CPU mismatch** as shown below
     
     
 * Second Way:
-This can also be done automatically by setting the env var CHANGE_MINIKUBE_NONE_USER=true
+This can also be done automatically by setting the env var `CHANGE_MINIKUBE_NONE_USER=true`
   
   *I prefer the second one*
 
