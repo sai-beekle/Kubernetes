@@ -1,6 +1,7 @@
- (K8s)
+#  Kubernetes (K8s)
 
-#  Kubernetes Intoduction
+## Introduction
+
 
  * Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.
  * It groups containers that make up an application into logical units for easy management and discovery.
@@ -37,7 +38,7 @@
  
  * **Traditional deployment era:**  Early on, organizations ran applications on physical servers.There was no way to define resource boundaries for applications in a physical server, and this caused resource allocation issues. For example, if multiple applications run on a physical server, there can be instances where one application would take up most of the resources, and as a result, the other applications would underperform. A solution for this would be to run each application on a different physical server. But this did not scale as resources were underutilized, and it was expensive for organizations to maintain many physical servers.
 
- * **Virtualized deployment era:** As a solution, virtualization was introduced. It allows you to run multiple Virtual Machines (VMs) on a single physical serverâ€™s CPU. Virtualization allows applications to be isolated between VMs and provides a level of security as the information of one application cannot be freely accessed by another application.
+ * **Virtualized deployment era:** As a solution, virtualization was introduced. It allows you to run multiple Virtual Machines (VMs) on a single physical server’s CPU. Virtualization allows applications to be isolated between VMs and provides a level of security as the information of one application cannot be freely accessed by another application.
 
 Virtualization allows better utilization of resources in a physical server and allows better scalability because an application can be added or updated easily, reduces hardware costs, and much more. With virtualization you can present a set of physical resources as a cluster of disposable virtual machines.
 
@@ -61,7 +62,7 @@ Containers have become popular because they provide extra benefits, such as:
    
    * Application-centric management: Raises the level of abstraction from running an OS on virtual hardware to running an application on an OS using logical resources.
    
-   * Loosely coupled, distributed, elastic, liberated micro-services: applications are broken into smaller, independent pieces and can be deployed and managed dynamically â€“ not a monolithic stack running on one big single-purpose machine.
+   * Loosely coupled, distributed, elastic, liberated micro-services: applications are broken into smaller, independent pieces and can be deployed and managed dynamically – not a monolithic stack running on one big single-purpose machine.
    
    * Resource isolation: predictable application performance.
    
@@ -69,9 +70,9 @@ Containers have become popular because they provide extra benefits, such as:
  
  ## Why you need Kubernetes and what it can do??
  
-  Containers are a good way to bundle and run your applications. In a production environment, you need to manage the containers that run the applications and ensure that there is no downtime. For example, if a container goes down, another container needs to start. Wouldnâ€™t it be easier if this behavior was handled by a system?
+  Containers are a good way to bundle and run your applications. In a production environment, you need to manage the containers that run the applications and ensure that there is no downtime. For example, if a container goes down, another container needs to start. Wouldn’t it be easier if this behavior was handled by a system?
   
-  Thatâ€™s how Kubernetes comes to the rescue! Kubernetes provides you with a framework to run distributed systems resiliently. It takes care of scaling and failover for your application, provides deployment patterns, and more. For example,  **Kubernetes can easily manage a canary deployment for your system.**
+  That’s how Kubernetes comes to the rescue! Kubernetes provides you with a framework to run distributed systems resiliently. It takes care of scaling and failover for your application, provides deployment patterns, and more. For example,  **Kubernetes can easily manage a canary deployment for your system.**
 
   Note 
   > Canary deployments are a pattern for rolling out releases to a subset of users or servers. The idea is to first deploy the change to a small subset of servers, test it, and then roll the change out to the rest of the servers.
@@ -94,7 +95,7 @@ Containers have become popular because they provide extra benefits, such as:
      You provide Kubernetes with a cluster of nodes that it can use to run containerized tasks. You tell Kubernetes how much CPU and memory (RAM) each container needs. Kubernetes can fit containers onto your nodes to make the best use of your resources.
    
    * **Self-healing :**
-     Kubernetes restarts containers that fail, replaces containers, kills containers that donâ€™t respond to your user-defined health check, and doesnâ€™t advertise them to clients until they are ready to serve. 
+     Kubernetes restarts containers that fail, replaces containers, kills containers that don’t respond to your user-defined health check, and doesn’t advertise them to clients until they are ready to serve. 
    
    * **Secret and configuration management :**
       Kubernetes lets you store and manage sensitive information, such as passwords, OAuth tokens, and SSH keys. You can deploy and update secrets and application configuration without rebuilding your container images, and without exposing secrets in your stack configuration
@@ -109,13 +110,13 @@ Containers have become popular because they provide extra benefits, such as:
 
  This document outlines the various components you need to have a complete and working Kubernetes cluster.
  
- Hereâ€™s the diagram of a Kubernetes cluster with all the components tied together.
+ Here’s the diagram of a Kubernetes cluster with all the components tied together.
  
  ![image](https://d33wubrfki0l68.cloudfront.net/7016517375d10c702489167e704dcb99e570df85/7bb53/images/docs/components-of-kubernetes.png)
  
  ### Control Plane Components
   
- The Control Planeâ€™s components make global decisions about the cluster (for example, scheduling), as well as detecting and responding to cluster events (for example, starting up a new pod when a deploymentâ€™s replicas field is unsatisfied).
+ The Control Plane’s components make global decisions about the cluster (for example, scheduling), as well as detecting and responding to cluster events (for example, starting up a new pod when a deployment’s replicas field is unsatisfied).
 
  Control Plane components can be run on any machine in the cluster. However, for simplicity, set up scripts typically start all Control Plane components on the same machine, and do not run user containers on this machine. See Building High-Availability Clusters for an example multi-master-VM setup
   
@@ -123,12 +124,12 @@ Containers have become popular because they provide extra benefits, such as:
  
  The API server is a component of the Kubernetes control plane that exposes the Kubernetes API. The API server is the front end for the Kubernetes control plane.
 
- The main implementation of a Kubernetes API server is kube-apiserver. kube-apiserver is designed to scale horizontallyâ€”that is, it scales by deploying more instances. You can run several instances of kube-apiserver and balance traffic between those instances.
+ The main implementation of a Kubernetes API server is kube-apiserver. kube-apiserver is designed to scale horizontally—that is, it scales by deploying more instances. You can run several instances of kube-apiserver and balance traffic between those instances.
 
 
  #### etcd 
  
- Consistent and highly-available key value store used as Kubernetesâ€™ backing store for all cluster data.
+ Consistent and highly-available key value store used as Kubernetes’ backing store for all cluster data.
 
  If your Kubernetes cluster uses etcd as its backing store, make sure you have a back up plan for those data.
 
@@ -163,7 +164,7 @@ These controllers include:
 
  cloud-controller-manager runs cloud-provider-specific controller loops only. You must disable these controller loops in the kube-controller-manager. You can disable the controller loops by setting the ` --cloud-provider ` flag to ` external ` when starting the kube-controller-manager.
 
- cloud-controller-manager allows the cloud vendorâ€™s code and the Kubernetes code to evolve independently of each other. In prior releases, the core Kubernetes code was dependent upon cloud-provider-specific code for functionality. In future releases, code specific to cloud vendors should be maintained by the cloud vendor themselves, and linked to cloud-controller-manager while running Kubernetes.
+ cloud-controller-manager allows the cloud vendor’s code and the Kubernetes code to evolve independently of each other. In prior releases, the core Kubernetes code was dependent upon cloud-provider-specific code for functionality. In future releases, code specific to cloud vendors should be maintained by the cloud vendor themselves, and linked to cloud-controller-manager while running Kubernetes.
 
  The following controllers have cloud provider dependencies:
 
@@ -179,14 +180,14 @@ These controllers include:
  #### kubelet
  An agent that runs on each node in the cluster. It makes sure that containers are running in a Pod .
 
- The kubelet takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy. The kubelet doesnâ€™t manage containers which were not created by Kubernetes.
+ The kubelet takes a set of PodSpecs that are provided through various mechanisms and ensures that the containers described in those PodSpecs are running and healthy. The kubelet doesn’t manage containers which were not created by Kubernetes.
  
 #### kube-proxy
  kube-proxy is a network proxy that runs on each node in your cluster, implementing part of the Kubernetes Service concept.
 
  kube-proxy maintains network rules on nodes. These network rules allow network communication to your Pods from network sessions inside or outside of your cluster.
 
- kube-proxy uses the operating system packet filtering layer if there is one and itâ€™s available. Otherwise, kube-proxy forwards the traffic itself.
+ kube-proxy uses the operating system packet filtering layer if there is one and it’s available. Otherwise, kube-proxy forwards the traffic itself.
 
  #### Container Runtime
 
@@ -261,6 +262,3 @@ A cluster-level logging mechanism is responsible for saving container logs to a 
   
 
  ![the end](https://media-exp1.licdn.com/dms/image/C5612AQFfARfN7n97oQ/article-cover_image-shrink_600_2000/0?e=1592438400&v=beta&t=blDgnfUk7-GU-d8yuX8cBBEOxiC7d3-KghodTiBgJtM)
-
- 
-
