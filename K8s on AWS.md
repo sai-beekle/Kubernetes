@@ -134,7 +134,7 @@ Login to the user node and get into aws cli mode
 
    
 ```
-kops create cluster --cloud=aws --zones=ap-southeast-1b --name=cluster.engineer.sai.beekle --dns-zone=sai.beekle --dns private` 
+kops create cluster --cloud=aws --zones=ap-south-1a --name=cluster.engineer.sai.beekle --dns-zone=sai.beekle --dns private` 
 ```
  
  * Create kubernetes cluster `cluster.engineer.sai.beekle`
@@ -257,7 +257,7 @@ cluster will be created with 1 Master node and 10 worker nodes distributed among
 
  * Now you are in master node , create a deployment `web` with desired replicas of 15
 
-  type `kubectl run  web --image=nginx --port 80 --replicas=15`
+    type `kubectl run  web --image=nginx --port 80 --replicas=15`
   
 ![image](https://user-images.githubusercontent.com/58899893/79792730-06624980-836d-11ea-8e54-338b665c2d28.png)
 
@@ -271,7 +271,7 @@ cluster will be created with 1 Master node and 10 worker nodes distributed among
  * Conatiner is created and it is up means application is running , now the question is how to access it from client machine(from browser for end user)
   For that we have to expose the deployment as Load balancer so that it will give a DNS name and with the DNS name end user can access our application
 
-  type `kubectl expose deployment web --type=LoadBalancer`
+   type `kubectl expose deployment web --type=LoadBalancer`
  
   Once we expose our deployment as Load balancer internally, NodePort and ClusterIP created. All the worker nodes  will be registerd with the LoadBalancer
 
