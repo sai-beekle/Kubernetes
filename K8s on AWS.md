@@ -4,7 +4,7 @@
 
 * You can create your cluster in an existing or new VPC either with a pubic or private topology.
 
-* You’ll need to configure IAM permissions and an S3 bucket for the KOPS_STATE_STORE. 
+* You will need to configure IAM permissions and an S3 bucket for the KOPS_STATE_STORE. 
 
 * The KOPS_STATE_STORE is an storage system that stores your cluster configuration and state.
 
@@ -98,13 +98,15 @@ Login to the user node and get into aws cli mode
 
  Here I am creating a private hosted zone named `sai.beekle`, while creating select the VPC and region where you wanted to create the cluster.
  
- You should see the 4 NS records that Route53 assigned your hosted zone.
+ You should see the 4 NS records that Route53 assigned your hosted zone. as you see in AWS maangement console
+
+ ![image](https://user-images.githubusercontent.com/58899893/79763314-8a9ed780-8341-11ea-9458-e00af848a202.png)
 
 ###  Create an S3 bucket to store your clusters state
 
 * kops lets you manage your clusters even after installation. To do this, it must keep track of the clusters that you have created, along with their configuration, the keys they are using etc. This information is stored in an S3 bucket. S3 permissions are used to control access to the bucket.
 
-* Multiple clusters can use the same S3 bucket, and you can share an S3 bucket between your colleagues who are working on the same clusters - this is much easier than passing around kubecfg files. But anyone with access to the S3 bucket will have administrative access to all your clusters, so you don’t want to share it beyond the operations team.
+* Multiple clusters can use the same S3 bucket, and you can share an S3 bucket between your colleagues who are working on the same clusters - this is much easier than passing around kubecfg files. But anyone with access to the S3 bucket will have administrative access to all your clusters, so you don?t want to share it beyond the operations team.
 
 * Usually bucket name refers to the doamin name and as my domain name is `sai.beekle` , I will create a bucket named `engineer.sai.beekle`. 
  
@@ -125,19 +127,141 @@ Login to the user node and get into aws cli mode
   
  * Create kubernetes cluster definitions on S3 bucket
 
-  kops will create the configuration for your cluster. Note that it only creates the configuration, it does not actually create the cloud resources - you’ll do that in the next step with a `kops update cluster`. This give you an opportunity to review the configuration or change it.
+    kops will create the configuration for your cluster. Note that            it only creates the configuration, it does not actually create the cloud resources.  we have to do that in the next step with    a                                    
+	                 `kops update cluster`
+ This give you an opportunity to review the configuration or change it.
 
-   `kops create cluster --cloud=aws --zones=ap-southeast-1b --name=cluster.engineer.sai.beekle --dns-zone=sai.beekle --dns private` 
+   type `kops create cluster --cloud=aws --zones=ap-southeast-1b --name=cluster.engineer.sai.beekle --dns-zone=sai.beekle --dns private` 
  
- * Create kubernetes cluster 
+ * Create kubernetes cluster `cluster.engineer.sai.beekle`
  
-  `kops update cluster cluster.engineer.sai.beekle --yes`
+   type `kops update cluster cluster.engineer.sai.beekle --yes`
 
- * Validate your cluster
- 
-  `kops validate cluster`
- 
- * To list nodes
- 
-  `kubectl get nodes`
 
+ *  Validate the cluster
+ 
+
+   type `kops validate cluster cluster.engineer.sai.beekle`
+
+ ![image](https://user-images.githubusercontent.com/58899893/79785464-87b3df00-8361-11ea-9a4c-1a7cfcc00891.png)
+ 
+
+
+
+
+
+ As you see by default one master node and two worker nodes created with some configuration. 
+ 
+ If we want to create our own kind of cluster(number of worker nodes, type of node, volume of node, defined security groups for nodes etc) then we have to pass all these parameters while creating the cluster.
+ 
+ As you see now i will create a cluster with kops create cluster with master-node-size= t2.medium ,master-volume-size= 10 GB, worker node count= 10 , node-size= t2.micro,  node-volume-size= 8GB 
+
+```
+kops create cluster --name=cube.engineer.sai.beekle --cloud=aws \
+--zones="ap-south-1a,ap-south-1b,ap-south-1c" \
+--dns-zone=sai.beekle \
+--dns=private \
+--master-size= "t2.medium" \
+--master-volume-size= 10 \
+--master-public-name= "Master Node" \
+--node-count= 10 \
+--node-size= "t2.micro" \
+--node-volume-size= 8
+```
+
+cluster will be created with 1 Master node and 10 worker nodes distributed among ap-south-1a,ap-south-1b,ap-south-1c zones with our defined type and volume size.
+
+ * Create kubernetes cluster  cube.engineer.sai.beekle
+ 
+   type  `kops update cluster cube.engineer.sai.beekle --yes`  
+
+ * Validate cluster  cube.engineer.sai.beekle
+ 
+
+   type `kops validate cluster cube.engineer.sai.beekle`
+
+ ![image](https://user-images.githubusercontent.com/58899893/79786873-b6cb5000-8363-11ea-936f-757c8cf75cf1.png)
+
+ * To check the nodes
+
+  type `kubectl get nodes`
+ 
+ ![image](https://user-images.githubusercontent.com/58899893/79790211-082a0e00-8369-11ea-815e-f2c522971495.png)
+
+ 
+
+ ##### In CLI we just type two commands that is `kops create` , `kops update` and cluster is created. But at backend many steps will be taken place in AWS
+ 
+ * A VPC is created in the region by name same as cluster name and some random CIDR block will be assigned to VPC(we can assign the CIDR block as we wanted).
+
+ ![image](https://user-images.githubusercontent.com/58899893/79788363-2b06f300-8366-11ea-8184-c00c154e2f7f.png)
+ 
+ * As many zones we have defined while creating the cluster those many Subnets will be created within the cluster VPC and CIDR block is assigned ( in our case we defined 3 zones and hence 3 subnets created)
+
+  ![image](https://user-images.githubusercontent.com/58899893/79788900-fd6e7980-8366-11ea-8145-f2ec767c76dd.png)
+ 
+ * An Internet gateway will be craeted and it will be attached to the cluster VPC
+
+ ![image](https://user-images.githubusercontent.com/58899893/79789124-5c33f300-8367-11ea-9ce0-af1147004d8b.png)
+ 
+ * Route tables will be created(main and non main) and subnets will be associated with the route table
+
+ * Security groups will be created for master nodes and worker nodes( we can assign the security group for master node or worker node while creating cluster)
+ 
+ * EC2 instance created as master node and worker node within the cluster VPC 
+ 
+  ![image](https://user-images.githubusercontent.com/58899893/79787354-79b38d80-8364-11ea-8604-4e434dda5eb1.png)
+ 
+ * volumes will be created and attched to the nodes(we can assign the volume type as we required while creating the cluster). and also etcd volumes will be created.
+
+  ![images](https://user-images.githubusercontent.com/58899893/79790714-ccdc0f00-8369-11ea-9193-84e0a15c541e.png)
+ 
+ * Elastic Network inetrfaces will be created.
+ ![image](https://user-images.githubusercontent.com/58899893/79791244-9f439580-836a-11ea-94af-ccafa986d21a.png)
+
+ ## A simple handson on the K8s Cluster
+  
+ **We are going to install and run a simple nginx webserver to our cluster and test whether it is accessible by the end user or not** 
+
+ * Before creating the cluster we have created the ssh keys in user node by `ssh-keygen` which create a pair of keys, that will help us to get access to the cluster nodes with the `user node`
+ 
+ * Login to the master node 
+  type `ssh root@<public ip of master node>` 
+  it will ask for login as admin so 
+  type again  `ssh admin@<public ip of master node>` and then switch to root user.
+
+ * Now you are in master node , create a deployment `web` with desired replicas of 15
+  type `kubectl run  web --image=nginx --port 80 --replicas=15`
+  ![image](https://user-images.githubusercontent.com/58899893/79792730-06624980-836d-11ea-8e54-338b665c2d28.png)
+
+  The above command create a deployment web which inturn crates pods in worker nodes randomly and pods inturn create a container and run the container.
+  
+  we can check the pods, type `kubectl get pods -o wide`
+  ![image](https://user-images.githubusercontent.com/58899893/79793141-b6d04d80-836d-11ea-9808-0940736b2462.png)
+
+ * Conatiner is created and it is up means application is running , now the question is how to access it from client machine(from browser for end user)
+  For that we have to expose the deployment as Load balancer so that it will give a DNS name and with the DNS name end user can access our application
+  type `kubectl expose deployment web --type=LoadBalancer`
+ 
+  Once we expose our deployment as Load balancer internally, NodePort and ClusterIP created. All the worker nodes  will be registerd with the LoadBalancer
+  ![image](https://user-images.githubusercontent.com/58899893/79794770-79b98a80-8370-11ea-9596-73ff06d02912.png)
+
+ If we expose our deployment as NodeBalancer then a Load Balancer will create in the cluster as you can see in AWS management console.
+  ![image](https://user-images.githubusercontent.com/58899893/79794985-dae15e00-8370-11ea-91ca-cc8507eb95df.png)
+ 
+* You can check all (deployments , services) 
+ 
+  `kubectl get all`
+  ![images](https://user-images.githubusercontent.com/58899893/79795475-9c986e80-8371-11ea-89eb-a392dc9a8629.png)
+
+* Test our application
+  from any of the browser hit the DNS name that was generated while exposing deployment as LoadBalancer. we will directed to the nginx web server's welcome page.
+ ![image](https://user-images.githubusercontent.com/58899893/79795898-4a0b8200-8372-11ea-9be1-a832e409395e.png)
+
+ ![the end](https://media-exp1.licdn.com/dms/image/C5612AQFfARfN7n97oQ/article-cover_image-shrink_600_2000/0?e=1592438400&v=beta&t=blDgnfUk7-GU-d8yuX8cBBEOxiC7d3-KghodTiBgJtM)
+  
+
+
+
+
+    
