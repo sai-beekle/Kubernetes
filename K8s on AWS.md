@@ -90,7 +90,7 @@ Login to the user node and get into aws cli mode
 
  * Move the kops binary in to your PATH.
 
-    `sudo mv kops-linux-amd64 /usr/local/bin/kops`
+    `sudo mv kops-linux-amd64 /bin/kops`
 
 ### Create a route53(Hosted Zone) domain for your cluster 
  kops uses DNS for discovery, both inside the cluster and outside, so that you can reach the kubernetes API server from clients.
@@ -116,6 +116,10 @@ Login to the user node and get into aws cli mode
 * In Kops KOPS_STATE_STORE is a storage system that stores your cluster configuration and state. and thus we have to redirect our s3 bucket `engineer.sai.beekle` to `KOPS_STATE_STORE`
   
    `export KOPS_STATE_STORE=s3://engineer.sai.beekle`
+
+ >Note If we set it through CLI,it will be set temporarily 
+  It is advised to make this entry in your bashrc file so that it is set to permanently. Otherwise everytime you login to this system you have to set it all the time.
+
 
 ### Create ssh keys in user node
  
