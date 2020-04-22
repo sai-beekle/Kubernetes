@@ -1,9 +1,3 @@
-10.240.0.8   user-node
-
-10.240.0.8 laptop
-10.240.0.9 kubeadm-workernode1
-10.240.0.234 kubeadm-workernode2
-10.240.0.29 kubeadm-masternode
 # Kubeadm
 
 Kubeadm helps you setup/bootstrap a minimum viable/usable Kubernetes cluster that just works. Kubeadm also supports cluster expansion, upgrades, downgrade, and managing bootstrap tokens, which are extra features, if you are comparing it with minikube.
@@ -314,12 +308,13 @@ We are ready with our cluster.
 
 * Check the deployments.
 
-`kubectl get deployments -o wide`
+ type `kubectl get deployments -o wide`
+
 ![image](https://user-images.githubusercontent.com/58899893/79992591-53f7c700-84d1-11ea-8fad-cb6f80d8a5e7.png)
 
 * To access the application from client or any browser(end user) expose the deployment `web-server` as NodePort service at port 80
 
-`kubectl expose deployment web-server --type=NodePort --port 80`
+type `kubectl expose deployment web-server --type=NodePort --port 80`
 
 ![image](https://user-images.githubusercontent.com/58899893/79993535-7b02c880-84d2-11ea-957f-d3af3bd8ec4d.png)
 
@@ -327,7 +322,7 @@ As you see in the image web-server service is exposed as NodePort with port `315
 
 * Get the full status of the cluster to know the deployments,services, and pods running
 
-`kubectl get all -o wide`
+type `kubectl get all -o wide`
 
 ![image](https://user-images.githubusercontent.com/58899893/79990096-442ab380-84ce-11ea-9e64-39ec9dc7e734.png)
 
@@ -344,6 +339,7 @@ Any browser hit <public ip of workernode1>:31523
  
  Any browser hit <public ip of workernode2>:31523
 
+![image](https://user-images.githubusercontent.com/58899893/79994437-97ebcb80-84d3-11ea-8e42-97afa7a47a6f.png)
   
 So Finally our K8s cluster will be like this
 
