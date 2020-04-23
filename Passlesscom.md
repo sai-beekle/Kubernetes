@@ -1,6 +1,9 @@
 # Passwordless communication(over ssh) between Linux Machines
 
 In todays world ecrything is automation and to process the smooth automation works the machines to be accessed from one another hassle free.
+
+Tools like Ansible,Kubenetes,Chef it is required to communicate servers automatically, in such cases it is mandatory.
+
 To achieve this we have to build a passwordless communication between the machine.
 
 ## Scenario based setup
@@ -16,7 +19,8 @@ Setup is as shown,
 
 Make the host entry in hosts file of master for visibility
 
-In masternode as a root user `vi /etc/hosts` 
+In masternode as a root user  type `vi /etc/hosts` 
+
 `(ip of workernode1)  workernode1`   
 
 In masternode user master is added to sudoers file and gave sudo permission, in same way worker1 and worker2 users also added in sudoers file and gave sudo permission.
@@ -28,7 +32,6 @@ make an entry as below
 ![image](https://user-images.githubusercontent.com/58899893/80068729-ba2a2b80-855d-11ea-8ee2-98762156cd79.png)
 
 
-![the end](https://media-exp1.licdn.com/dms/image/C5612AQFfARfN7n97oQ/article-cover_image-shrink_600_2000/0?e=1592438400&v=beta&t=blDgnfUk7-GU-d8yuX8cBBEOxiC7d3-KghodTiBgJtM)
 
 
 Workernode1 ssh file need to be configured such that it can be connected by other systems over ssh
@@ -42,12 +45,14 @@ enable 'PermitRootLogin yes` , enable `PasswordAuthentication yes` ,disable `Pas
 restart the sshd servive as `servive sshd restart`
 
 Now from the masternode as master user if you try to login workernode1
+
 `ssh worker1@workernode1`  it will be asking for password for worker1 user, if you provide the password it will get access. Same with worker2 user as you see below
 
 ![image](https://user-images.githubusercontent.com/58899893/80069142-7edc2c80-855e-11ea-9fc1-808e13191260.png)
 
 
 So now we have to generate a ssh key by `ssh-kengen` it will create a .ssh directory in master users home directory and saves a key pair(pvt and public) i.e id_rsa.pub and id_rsa as you see
+
 in masternode type `ssh-keygen` and enter ,enter, enter for defaults
  
 ![image](https://user-images.githubusercontent.com/58899893/80069486-0c1f8100-855f-11ea-97e1-cd29ddbf36bc.png)
@@ -71,21 +76,22 @@ This time you access it without asking for password
 
 ![image](https://user-images.githubusercontent.com/58899893/80070088-070f0180-8560-11ea-9919-9d9a6a2045b8.png)
 
-#### Test 
+## Test 
 
 * From masternode access worker1 user for workernode1 and create a `testfile` put some content. And the same file with content will appear in workernode1's worker1 home directory.
+
 ![image](https://user-images.githubusercontent.com/58899893/80070429-8e5c7500-8560-11ea-8045-b50d219eb7e8.png)
 
 * From masternode access worker2 user for workernode1 and create a `myfile` put some content. And the same file with content will appear in workernode1's worker2 home directory.
+
 ![image](https://user-images.githubusercontent.com/58899893/80070519-b350e800-8560-11ea-9e1b-eafcac66a1d9.png)
 
 
 So now we successfully built passwordless communication between servers.
 
 
+![the end](https://media-exp1.licdn.com/dms/image/C5612AQFfARfN7n97oQ/article-cover_image-shrink_600_2000/0?e=1592438400&v=beta&t=blDgnfUk7-GU-d8yuX8cBBEOxiC7d3-KghodTiBgJtM) 
 
-
-![image]() 
 
 
 
