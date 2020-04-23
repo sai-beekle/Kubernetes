@@ -38,7 +38,7 @@ Workernode1 ssh file need to be configured such that it can be connected by othe
 
 as a root user `vi /etc/ssh/sshd_config`
 
-enable 'PermitRootLogin yes`  enable `PasswordAuthentication yes` disable `PasswordAuthentication no` as shown below
+enable `PermitRootLogin yes` , enable `PasswordAuthentication yes` , disable `PasswordAuthentication no` as shown below
 
 ![image](https://user-images.githubusercontent.com/58899893/80069060-50f6e800-855e-11ea-80f1-9714857070dc.png)
 
