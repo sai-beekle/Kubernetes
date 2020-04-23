@@ -72,7 +72,7 @@ Security Enhanced Linux defines the access rights of every user, application, pr
 
 ## Setup:
 
-* I am working in my laptop within the same network as a normal user. and to do so I launch one more machine same as worker node and to setup cluster I will ssh to every node. Pls refer [passwordless-ssh-login](xxx) 
+* I am working in my laptop within the same network as a normal user. and to do so I launch one more machine same as worker node and to setup cluster I will ssh to every node. Pls refer [passwordless-ssh-login](https://github.com/sai-beekle/Kubernetes/blob/master/Passlesscom.md) 
 
 * Make a hostname entry 
 
